@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<h1 class="pt-3 pb-3 text-light text-center">
+    <u>RickBot</u>
+</h1>
+
+<img class = "mx-auto d-block mb-4" src="{% static 'assets/rick_headshot.png' %}" style="border-radius: 20px; width: 15%;"alt="">
+<p class = "text-light text-center pb-3">An AI-Powered Chatbot built through Chat-GPT that responds like Rick Sanchez from "Rick and Morty". <br> Talk with RickBot below, view source code on my GitHub, and check out my portfolio <a href="https://www.adityaanandan.com/">here</a>. </p>
+
+<div class="card mx-auto"  id = "card" style="background-color: #D9D9D9; border-radius: 1rem; max-width: 30rem">
+    <div class="card-body">
+     <h3 class = "text-center">Talk with Rick!</h3>
+     <ul class="list-unstyled messages-list">
+        
+        <li class="message received">
+          <div class="message-text">
+            <div class="message-sender">
+              <b>RickBot</b>
+            </div>
+            <div class="message-content">
+              <mark style = "background-color: #83F28F;">I'm Pickle Rick!!!!</mark>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <br>
+      <br>
+      <br>
+      <br>
+       <form class = "message-form" action="">
+        {%csrf_token%}
+       
+         <div class="form-group">
+
+           
+           
+           <input type="text" name = "chat" class="form-control message-input" id="exampleUsername" placeholder="Send Message">
+         </div>
+
+         
+         
+
+       </form>
+    
+
+     
+    </div>
+
+
+
+   
+  </div>
+
+  <br>
+  <br>
+  <br>
+
+  <b><h3 class = "text-center text-light">A project by: </h3></b>
+  <img class = "d-block mx-auto"  src="{% static 'assets/signature.png' %}" style = "width: 25%" alt="">
+
+
+  <footer style = "background-color: #2F303A;">
+    <div class="d-flex pt-3 align-items-right">
+       
+        <a href = "https://www.instagram.com/aditya.anandan/?hl=en">
+            <div class = "h3" style = "position: relative; left: 10px; color: white;">
+                <i class="bi bi-instagram"></i>
+            </div>
+        </a>
+
+       
+
+        <a href = "https://twitter.com/aditya_anandan">
+            <div class = "h3" style = "position: relative; left: 45px; color: white;">
+                <i class="bi bi-twitter"></i>
+            </div>
+
+        </a>
+        
+        <a href="https://github.com/epicbotgamer">
+            <div class = "h3" style = "position: relative; left: 80px;  color: white;">
+                <i class="bi bi-github"></i>
+            </div>
+        </a>
+
+        <a href="https://www.linkedin.com/in/adityaanandan/">
+            <div class = "h3" style = "position: relative; left: 115px;  color: white;">
+                <i class="bi bi-linkedin"></i>
+            </div>
+        </a>
+
+        <a href="https://www.youtube.com/@adityaanandan9486">
+          <div class="h2" style = "position: relative; left: 150px;  bottom: 2px; color: white;">
+            <i class="bi bi-youtube"></i>
+          </div>
+        </a>
+        
+       
+       
+       
+
+
+
+    </div>
+
+</footer>
+
+
+ 
+
+
+  <script>
+    const messagesList = document.querySelector('.messages-list')
+    const messageForm = document.querySelector('.message-form')
+    const messageInput = document.querySelector('.message-input')
+
+    messageForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const message = messageInput.value.trim();
+    if (message.length === 0) {
+      return;
+    }
+
+    
+    const messageItem = document.createElement('li');
+    messageItem.classList.add('message', 'sent');
+    messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+                <b>You</b>
+            </div>
+            <div class="message-content">
+                <mark>
+                    ${message}
+                </mark>
+               
+            </div>
+        </div>`;
+    messagesList.appendChild(messageItem);
+
+    messageInput.value = '';
+
+    fetch('', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        'message': message
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        const response = data.response;
+        const messageItem = document.createElement('li');
+        messageItem.classList.add('message', 'received');
+        messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+              <b>RickBot</b>
+            </div>
+            <div class="message-content">
+                <mark style = "background-color: #83F28F;"> 
+                    ${response}
+                </mark>
+                
+            </div>
+        </div>
+          `;
+        messagesList.appendChild(messageItem);
+      });
+  });
+
+  </script>
+{% endblock %}
