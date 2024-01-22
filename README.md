@@ -39,7 +39,7 @@
   <p align="center">
     by Aditya Anandan
     <br />
-    <a href=""><strong>See Project»</strong></a>
+    <a href="https://web-production-d232.up.railway.app/"><strong>See Project»</strong></a>
     <br />
     <br />
     <a href="https://huggingface.co/aanandan/RickGPT-medium-Aditya">View Model</a>
